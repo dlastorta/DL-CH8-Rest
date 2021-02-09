@@ -1,18 +1,11 @@
-//req.params.id req.body
-//app.use(express.json())
-//app.use(express.urlencoded({extended:true}))
-
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
 const app = express();
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 const items = require('./item');
 let item = items.Item;
-
-//bodyParser
-var jsonParser = bodyParser.json();
 
 //server
 const PORT = 8080;
@@ -25,20 +18,13 @@ server.on('error',error=> console.log(`Server Error: ${error}`));
 let productos = [];
 let idGen = 1;
 
-
 app.get("/productos/:id",(req,res)=>{
     try{
-        console.log(req.params.id);
-        console.log(productos);
         let producto = productos.find((producto) => {
-            console.log(producto);
-            console.log(producto.id);
-            console.log(req.params.id);
             if(producto.id == req.params.id) {
                 return producto;
             }
         });
-        console.log(JSON.stringify(producto));
         if(producto){
             res.json(JSON.stringify(producto));
         }
@@ -65,7 +51,6 @@ app.get("/productos",(req,res)=>{
 });
 
 app.post("/productos", (req,res)=>{
-    console.log(req.body);
     try{
         let newItem = new item(
             idGen,
