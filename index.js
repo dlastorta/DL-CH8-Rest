@@ -3,9 +3,16 @@
 //app.use(express.urlencoded({extended:true}))
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-let items = require('./item');
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
+
+const items = require('./item');
 let item = items.Item;
+
+//bodyParser
+var jsonParser = bodyParser.json();
 
 //server
 const PORT = 8080;
@@ -16,12 +23,22 @@ server.on('error',error=> console.log(`Server Error: ${error}`));
 
 //productos
 let productos = [];
-let idGen = 0;
+let idGen = 1;
 
 
 app.get("/productos/:id",(req,res)=>{
     try{
-        let producto = productos.find(producto => producto.id === req.params.id)
+        console.log(req.params.id);
+        console.log(productos);
+        let producto = productos.find((producto) => {
+            console.log(producto);
+            console.log(producto.id);
+            console.log(req.params.id);
+            if(producto.id == req.params.id) {
+                return producto;
+            }
+        });
+        console.log(JSON.stringify(producto));
         if(producto){
             res.json(JSON.stringify(producto));
         }
@@ -32,9 +49,6 @@ app.get("/productos/:id",(req,res)=>{
     catch(err){
         res.json(JSON.stringify(JSON.stringify({error: err})));
     }
-    
-    
-    
 });
 
 app.get("/productos",(req,res)=>{
@@ -50,8 +64,8 @@ app.get("/productos",(req,res)=>{
     }
 });
 
-app.post("/productos",(req,res)=>{
-    console.log("title:" + req.body.title);
+app.post("/productos", (req,res)=>{
+    console.log(req.body);
     try{
         let newItem = new item(
             idGen,
@@ -60,6 +74,7 @@ app.post("/productos",(req,res)=>{
             req.body.thumbnail
         );
     productos.push(newItem);
+    idGen++;
     res.json(`item creado: ${JSON.stringify(newItem)}`);
     }
     catch(err){
