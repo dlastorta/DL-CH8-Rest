@@ -26,27 +26,27 @@ app.get("/productos/:id",(req,res)=>{
             }
         });
         if(producto){
-            res.json(JSON.stringify(producto));
+            res.json(producto);
         }
         else {
-            res.json(JSON.stringify(JSON.stringify({error: 'producto no encontrado'})));
+            res.json({error: 'producto no encontrado'});
         }
     }
     catch(err){
-        res.json(JSON.stringify(JSON.stringify({error: err})));
+        res.json({error: err});
     }
 });
 
 app.get("/productos",(req,res)=>{
     try{
         if(productos.length > 0){
-            res.json(JSON.stringify(productos));
+            res.json(productos);
         } else {
-            res.json(JSON.stringify(JSON.stringify({error: 'no hay productos cargados'})));
+            res.json({error: 'no hay productos cargados'});
         }
     }
     catch(err){
-        res.json(JSON.stringify(JSON.stringify({error: err})));
+        res.json({error: err});
     }
 });
 
@@ -60,11 +60,11 @@ app.post("/productos", (req,res)=>{
         );
     productos.push(newItem);
     idGen++;
-    res.json(`item creado: ${JSON.stringify(newItem)}`);
+    res.json(`Item Creado: ${JSON.stringify(newItem)}`);
     }
     catch(err){
         console.log(err);
-        res.json(JSON.stringify({error: "error salvando producto"}));
+        res.json({error: "error salvando producto"});
     }
 });
 
